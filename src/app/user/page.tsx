@@ -8,7 +8,7 @@ import { Users } from "@/components/Tables/users"
 
 import EditUserModel from "./edit-user"
 import { ROLE_DROPDOWN } from "@/constants/AppConstant"
-import { getUsers } from "@/services/fetch-api-data"
+import { getUsers } from "@/services/fetchapi.services"
 
 
 

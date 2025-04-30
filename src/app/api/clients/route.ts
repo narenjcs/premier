@@ -1,14 +1,16 @@
 import { firebase } from "@/lib/firebase-admin";
-import { a } from "framer-motion/client";
-import { NextResponse } from "next/server";
+import { getfilterQuery } from "@/services/api.service";
 
-export async function GET(request: Request) {
+import { NextRequest, NextResponse } from "next/server";
+const db = firebase.firestore()
+export async function GET(request: NextRequest) {
 
 
-    const db = firebase.firestore()
 
-    const clientsSnapshot = await db.collection('clients').get();
 
+   
+    let query: FirebaseFirestore.Query<FirebaseFirestore.DocumentData> = getfilterQuery(request, db.collection('clients')); // FIXED typing
+    const clientsSnapshot = await query.get();
     const clients = await Promise.all(
     clientsSnapshot.docs.map(async (doc) => {
 

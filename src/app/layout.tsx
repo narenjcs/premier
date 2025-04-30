@@ -35,7 +35,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
 
       <body className={"font-inter antialiased bg-slate-100 text-slate-600"}>
     
-      <NextTopLoader color="#5750F1" showSpinner={true} /><AuthGard>{children}</AuthGard> 
+      <NextTopLoader color="#5750F1" showSpinner={true} /><AuthGard session={session}>{children}</AuthGard> 
      
        </body>
     </html>);
@@ -47,7 +47,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
       
         <MainLayOut>
 
-       <AuthGard>{children} </AuthGard> 
+       <AuthGard session={session}>{children} </AuthGard> 
         </MainLayOut>
        
       </body>

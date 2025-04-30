@@ -1,6 +1,29 @@
+import { ROLE_ADMIN, ROLE_SUPER_ADMIN, ROLE_SUPERVISOR } from "@/constants/AppConstant";
 import * as Icons from "../icons";
+interface NavItem {
+  title: string;
+  url?: string;
+  roles?: String[];
+}
 
-export const NAV_DATA = [
+// Menu section with potential subitems
+interface NavSection {
+  title: string;
+  url?: string;
+  icon?: any; // Replace `any` with a proper icon type if available
+  roles?: String[];
+  items: NavItem[];
+}
+
+// Top-level labeled menu group
+interface NavGroup {
+  label: string;
+  items: NavSection[];
+}
+
+// Full nav data
+export type NavData = NavGroup[];
+export const NAV_DATA: NavData = [
   {
     label: "MAIN MENU",
     items: [
@@ -63,24 +86,29 @@ export const NAV_DATA = [
       },
       {
         title: "User management",
+        roles:[ROLE_ADMIN, ROLE_SUPER_ADMIN, ROLE_SUPERVISOR],
         icon: Icons.User,
         items: [
           {
             title: "User Profile",
             url: "/user",
+            roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN],
           },  
           
           {
             title: "Clients",
             url: "/user/client",
+            roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN],
           },
           {
             title: "Sites",
             url: "/user/site",
+            roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN],
           },  
           {
-            title: "Maintanance",
-            url: "/user/maintanance",
+            title: "Maintenance",
+            url: "/user/maintenance",
+            roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN, ROLE_SUPERVISOR],
           },  
         ],
         

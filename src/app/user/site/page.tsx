@@ -8,7 +8,7 @@ import { Sites } from "@/components/Tables/sites"
 
 import EditClientModel from "./edit-site"
 
-import {  getSites } from "@/services/fetch-api-data"
+import {  getSites } from "@/services/fetchapi.services"
 
 
 

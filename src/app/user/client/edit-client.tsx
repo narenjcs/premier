@@ -5,7 +5,7 @@ import '@ant-design/v5-patch-for-react-19';
 
 import { ShowcaseSection } from "@/components/Layouts/showcase-section";
 import { ROLE_CLIENT, ROLE_VENTOR } from "@/constants/AppConstant";
-import { updateClient, getUsers, createClient } from "@/services/fetch-api-data";
+import { updateClient, getUsers, createClient } from "@/services/fetchapi.services";
 import {
     Modal,
 

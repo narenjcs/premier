@@ -4,16 +4,20 @@ import { Logo } from "@/components/logo";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { NAV_DATA } from "./data";
 import { ArrowLeftIcon, ChevronUp } from "./icons";
 import { MenuItem } from "./menu-item";
 import { useSidebarContext } from "./sidebar-context";
+import { getAuth } from "@/app/actions";
+import { set } from "react-hook-form";
 
 export function Sidebar() {
   const pathname = usePathname();
   const { setIsOpen, isOpen, isMobile, toggleSidebar } = useSidebarContext();
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
+
+  const [session, setSession] = useState<any>(null);
 
   const toggleExpanded = (title: string) => {
     setExpandedItems((prev) => (prev.includes(title) ? [] : [title]));
@@ -23,6 +27,15 @@ export function Sidebar() {
     //   prev.includes(title) ? prev.filter((t) => t !== title) : [...prev, title],
     // );
   };
+
+  const getSession = useCallback(async () => {
+    let session: any = await getAuth()
+    setSession(session)
+  },[getAuth])
+
+  useEffect(() => {
+    getSession()
+  }, [getSession]);
 
   useEffect(() => {
     // Keep collapsible open, when it's subpage is active
@@ -95,7 +108,13 @@ export function Sidebar() {
 
                 <nav role="navigation" aria-label={section.label}>
                   <ul className="space-y-2">
-                    {section.items.map((item) => (
+                    {section.items.filter(item=>{
+                      if(item.roles){
+                      
+                        return session?.user.role && item.roles.includes(session?.user.role)
+                      }
+                      return true
+                    }).map((item) => (
                       <li key={item.title}>
                         {item.items.length ? (
                           <div>
@@ -127,11 +146,17 @@ export function Sidebar() {
                                 className="ml-9 mr-0 space-y-1.5 pb-[15px] pr-0 pt-2"
                                 role="menu"
                               >
-                                {item.items.map((subItem) => (
+                                {item.items.filter(item=>{
+                                   if(item.roles){
+                      
+                                    return session?.user.role && item.roles.includes(session?.user.role)
+                                  }
+                                  return true
+                                }).map((subItem) => (
                                   <li key={subItem.title} role="none">
                                     <MenuItem
                                       as="link"
-                                      href={subItem.url}
+                                      href={subItem.url||''}
                                       isActive={pathname === subItem.url}
                                     >
                                       <span>{subItem.title}</span>

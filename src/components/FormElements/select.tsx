@@ -16,6 +16,8 @@ type PropsType = {
   inputClassName?: string;
   error?:string
   width?: string|number;
+  required?: boolean;
+  value?: string | string[] | undefined;
   onChange?: (value: string | any[] | undefined) => void;
 } & (
     | { placeholder?: string; defaultValue: string | string [] }
@@ -30,14 +32,16 @@ export function Select({
   prefixIcon,
   className,
   antdSelect,
+  required,
  inputClassName,
   error,
   width,
   onChange,
   mode,
+  value
 }: PropsType) {
   const id = useId();
-
+  
   const [isOptionSelected, setIsOptionSelected] = useState(false);
 
   return (
@@ -46,7 +50,7 @@ export function Select({
         htmlFor={id}
         className="block text-body-sm font-medium text-dark dark:text-white"
       >
-        {label}
+        {label} {required && <span className="text-red">*</span>}
       </label>
 
       <div className="relative">
@@ -61,7 +65,8 @@ export function Select({
           <select
 
             id={id}
-            defaultValue={defaultValue || ""}
+            defaultValue={value || ""}
+            value={value}
             onChange={(event) => { setIsOptionSelected(true), onChange && onChange(event.target.value || "") }}
             className={cn(
               "w-full appearance-none rounded-lg border border-stroke bg-transparent px-5.5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-dark-3 dark:bg-dark-2 dark:focus:border-primary [&>option]:text-dark-5 dark:[&>option]:text-dark-6",
@@ -84,42 +89,15 @@ export function Select({
           <ChevronUpIcon className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 rotate-180" />
         </> :
 
-          // <HerouiSelect
-          //   className={className}
-          //   label={label}
-            
-          //   placeholder={placeholder}
-          //   // defaultSelectedKeys={defaultValue}
-          //   selectedKeys={defaultValue}
-          //   disabledKeys={disabledKeys}
-          //   selectionMode={mode}
-          //   variant="bordered"
-          //   onSelectionChange={(e) => {
-             
-          //     if (mode === "multiple") {
-          //     onChange && onChange(Array.from(e));
-          //     }
-          //     else {
-          //       const selectedValue = Array.from(e)
-          //       if(selectedValue.length){
-          //         onChange && onChange(String(selectedValue[0]));
-          //       }else{
-          //         onChange && onChange('');
-          //       }
-               
-          //     }
-          //   }}
-          // >
-          //   {items.map((item) => (
-          //     <SelectItem key={item.value} >{item.label}</SelectItem>
-          //   ))}
-          // </HerouiSelect>
-          <AntdSelect options={items}
-            defaultValue={defaultValue}
+       <>
+      
+        <AntdSelect options={items}
+            defaultValue={defaultValue? defaultValue : undefined}
+            value={value}
             mode={mode}
             placeholder={placeholder}
             allowClear
-            style={{ width: width||'100%' }}
+            style={{ width: width||'100%'}}
             className={inputClassName}
             filterOption={(input, option) =>
               (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
@@ -133,6 +111,8 @@ export function Select({
             >
 
           </AntdSelect>
+       </>
+         
           
           }
 

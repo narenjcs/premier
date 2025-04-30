@@ -5,7 +5,7 @@ import { Select } from "@/components/FormElements/select";
 import { ShowcaseSection } from "@/components/Layouts/showcase-section";
 import { STATUS_DROPDOWN } from "@/constants/AppConstant";
 
-import { createSite, getClients, updateSite } from "@/services/fetch-api-data";
+import { createSite, getClients, updateSite } from "@/services/fetchapi.services";
 import { Client } from "@/types/models";
 import {
     Modal,
@@ -78,7 +78,7 @@ export default function EditClientModel({ site, isOpen, onOpenChange }: EditUser
                 
                             <form onSubmit={handleSubmit(submitForm)} >
                               
-                                    <ShowcaseSection title={<div className="flex min-w-fit items-center gap-3"> Edit Client</div>} className="!p-6.5">
+                                    <ShowcaseSection title={<div className="flex min-w-fit items-center gap-3"> Edit Site</div>} className="!p-6.5">
 
                                         <Controller
                                             name="name"
@@ -145,7 +145,7 @@ export default function EditClientModel({ site, isOpen, onOpenChange }: EditUser
                                             control={control}
                                             rules={{ required: 'This Field is required'  }}
                                             
-                                            render={({ field, fieldState: { error } }) =>  <Select items={status} label="Status" placeholder="Select a Status" defaultValue={site.status} onChange={field.onChange} error={error?.message} ></Select>}
+                                            render={({ field, fieldState: { error } }) =>  <Select items={status} label="Status" placeholder="Select a Status" value={site.status} onChange={field.onChange} error={error?.message} ></Select>}
                                         />
                                                 <Controller
                                                 name="client"
@@ -155,7 +155,7 @@ export default function EditClientModel({ site, isOpen, onOpenChange }: EditUser
                                                     className="max-w-xs"
                                                     label="Client"
                                                     placeholder="Select a Client"
-                                                    defaultValue={ field.value ? field.value : ''}
+                                                    value={ field.value ? field.value : ''}
                                                 
                                                   
                                                     items={clientList.map((client: any) => (

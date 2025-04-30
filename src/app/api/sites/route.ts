@@ -1,13 +1,15 @@
 import { firebase } from "@/lib/firebase-admin";
-import { NextResponse } from "next/server";
+import { getfilterQuery } from "@/services/api.service";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: Request) {
+const db = firebase.firestore()
+export async function GET(request: NextRequest) {
 
 
-    const db = firebase.firestore()
 
-    const sitesSnapshot = await db.collection('sites').get();
-
+   
+    let query: FirebaseFirestore.Query<FirebaseFirestore.DocumentData> = getfilterQuery(request, db.collection('sites')); // FIXED typing
+    const sitesSnapshot = await query.get();
     const sites = await Promise.all(
     sitesSnapshot.docs.map(async (doc) => {
 
@@ -38,7 +40,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-    const db = firebase.firestore()
+
     const data = await request.json()
     const { name, location, status , client } = data
 
@@ -59,7 +61,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: 'Client created successfully' }, { status: 201 })
 }
 export async function PUT(request: Request) {   
-    const db = firebase.firestore()
+
     const data = await request.json()
     const { id,name, location, status, client  } = data
 
@@ -78,7 +80,7 @@ export async function PUT(request: Request) {
     return NextResponse.json({ message: 'Client updated successfully' }, { status: 200 })
 }
 export async function DELETE(request: Request) {
-    const db = firebase.firestore()
+
     const data = await request.json()
     const { id } = data
 

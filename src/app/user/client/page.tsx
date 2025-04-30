@@ -8,7 +8,7 @@ import { Clients } from "@/components/Tables/clients"
 
 import EditClientModel from "./edit-client"
 
-import { getClients } from "@/services/fetch-api-data"
+import { getClients } from "@/services/fetchapi.services"
 
 import { User } from "@/types/models"
 

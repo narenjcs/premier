@@ -2,7 +2,7 @@
 import InputGroup from "@/components/FormElements/InputGroup";
 import { Select } from "@/components/FormElements/select";
 import { ShowcaseSection } from "@/components/Layouts/showcase-section";
-import { updateUserRole } from "@/services/fetch-api-data";
+import { updateUserRole } from "@/services/fetchapi.services";
 import {
     Modal,
    
@@ -10,18 +10,26 @@ import {
     
 } from "antd";
 import Image from "next/image";
+import { use, useEffect } from "react";
 
 import { Controller, useForm } from 'react-hook-form';
 
 interface EditUserModelProps {
     user: any, isOpen: boolean, roles: { label: string, value: string }[], onOpenChange: (isOpen: boolean) => void}
 export default function EditUserModel({user,isOpen, roles, onOpenChange}: EditUserModelProps) {
-
+  
     const {
+        reset,
         control,
         handleSubmit,
         formState: { errors },
-    } = useForm();
+    } = useForm({defaultValues: user});
+
+    useEffect(() => {
+        if (user) {
+            reset(user);
+        }
+    }, [user, reset]);
 
     const submitForm = async(data: any) => {
         console.log(data);
@@ -66,7 +74,10 @@ export default function EditUserModel({user,isOpen, roles, onOpenChange}: EditUs
                                         <Controller
                                             name="role"
                                             control={control}
-                                            render={({ field }) => <Select items={roles} label="Role" placeholder="Select a role" defaultValue={user.role} onChange={field.onChange} ></Select>}
+                                            render={({ field }) => {    
+                                                console.log(field);
+                                                return <Select items={roles} label="Role"  placeholder="Select a role" value={field.value||''} onChange={field.onChange} ></Select>
+                                            }}
                                         />
 
                                        

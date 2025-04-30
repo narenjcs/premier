@@ -14,18 +14,23 @@ import { LogOutIcon, SettingsIcon, UserIcon } from "./icons";
 import { doSignOut, getAuth } from "@/app/actions";
 import { useRouter } from 'next/navigation';
 import { LOGIN } from "@/constants/RouteConstant";
-
+import { useUserStore } from '@/store/user.store';
 
 export function UserInfo() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter()
   const [user, setUser] = useState<any>({ name: '', email: '', img: '/images/user/user-03.png' });
+  const {user: userData} = useUserStore()
   useEffect(() => {
-    (async () => {
-      let session: any = await getAuth()
-      setUser({ name: session?.user?.name, email: session?.user?.email, img: session?.user?.image })
-    })()
-  }, [])
+    // (async () => {
+    //   let session: any = await getAuth()
+    //   setUser({ name: session?.user?.name, email: session?.user?.email, img: session?.user?.image })
+    // })()
+    if(userData && userData?.name){
+      setUser({ name: userData?.name, email: userData?.email, img: userData?.image })
+    }
+   
+  }, [userData])
 
   const handleClickSignOut = async () => {
     setIsOpen(false);
